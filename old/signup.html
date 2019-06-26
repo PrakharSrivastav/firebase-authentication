@@ -9,13 +9,14 @@
 <body>
 
 <div class="container">
-    <div class="jumbotron mt-5">
+    <div class="jumbotron">
         <h1 class="display-4">Hello, there!</h1>
-        <p class="lead">Create a user below</p>
-        <hr>
+        <p class="lead">This is a simple app to demonstrate firebase authentication.</p>
+        <hr class="my-4">
+        <button class="btn btn-primary btn-lg" role="button" id="logout">Logout</button>
     </div>
     <div class="row">
-        <div class="col-sm-8 offset-sm-2">
+        <div class="col-xs-12 col-md-6">
             <div class="card">
                 <div class="card-header">
                     Signup Form
@@ -28,8 +29,7 @@
                                    aria-describedby="emailHelp"
                                    placeholder="Enter email" required>
                             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.
-                            </small>
+                                else.</small>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
@@ -38,6 +38,18 @@
                         </div>
                         <button type="button" class="btn btn-primary" id="signup-button">Submit</button>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Login form
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         </div>
@@ -59,41 +71,59 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
 <script>
-    let firebaseConfig = {};
+    let firebaseConfig = {
+    };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
     $(document).ready(function () {
-        firebase.auth().onAuthStateChanged(u => {
-            if (u) gotoDashboard();
-        });
+        $("#logout").attr("disabled", true).hide();
 
-        $("#signup-button").click(() => {
+        $("#signup-button").click(function () {
             let email = $("#signup-email").val();
             let pass = $("#signup-password").val();
 
             if (email === "" || pass === "") {
-                alert("please provide username and password");
                 return false;
             }
 
-            firebase.auth()
-                .createUserWithEmailAndPassword(email, pass)
-                .then(() => gotoDashboard())
-                .catch((error) => {
-                    alert(error.message);
-                    return false;
-                });
+            firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function (error) {
+                alert(error.message);
+                return false;
+            })
 
         });
 
 
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(user);
+                disableSignUpForm();
+
+            } else {
+                enableSignUpForm();
+            }
+        });
+
+        $("#logout").click(function () {
+            firebase.auth().signOut();
+        });
     });
 
-
-    function gotoDashboard() {
-        window.location.replace("http://localhost:1313/dashboard.html");
+    function disableSignUpForm() {
+        $("#signup-email").attr("readOnly", true);
+        $("#signup-password").attr("readOnly", true);
+        $("#signup-button").attr("disabled", true);
+        $("#logout").attr("disabled", false).show();
     }
+
+    function enableSignUpForm() {
+        $("#signup-email").attr("readOnly", false);
+        $("#signup-password").attr("readOnly", false);
+        $("#signup-button").attr("disabled", false);
+        $("#logout").attr("disabled", true).hide();
+    }
+
 </script>
 </body>
 </html>;

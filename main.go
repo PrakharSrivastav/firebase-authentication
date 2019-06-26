@@ -9,7 +9,7 @@ import (
 func main() {
 	e := echo.New()
 	e.HideBanner = true
-	e.File("/", "public/index.html")
+	e.Static("/", "public")
 
 	grp := e.Group("/api/")
 	grp.GET("serviceA", serviceA)
