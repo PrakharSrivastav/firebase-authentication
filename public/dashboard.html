@@ -8,48 +8,63 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container pt-2">
     <div class="jumbotron">
-        <h1 class="display-4">Hello, there!</h1>
-        <p class="lead">This is a simple app to demonstrate firebase authentication.</p>
+        <h1 class="display-4">Hail, firebase !!</h1>
+        <p class="lead">You are logged in now. Your details are listed below</p>
         <hr class="my-4">
         <button class="btn btn-primary btn-lg" role="button" id="logout">Logout</button>
     </div>
     <div class="row">
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Key</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Email</td>
+                        <td id="email">Otto</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>UserId</td>
+                        <td id="userId">the Bird</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Token</td>
+                        <td id="token">the Bird</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row my-5">
         <div class="col-xs-12 col-md-6">
             <div class="card">
                 <div class="card-header">
-                    Signup Form
+                    Call Service A
                 </div>
                 <div class="card-body">
-                    <form id="signup-form">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control disabled" id="signup-email"
-                                   aria-describedby="emailHelp"
-                                   placeholder="Enter email" required>
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="signup-password" placeholder="Password"
-                                   required>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="signup-button">Submit</button>
-                    </form>
+                    <button type="button" class="btn btn-primary" id="service-a">Submit</button>
                 </div>
             </div>
         </div>
         <div class="col-xs-12 col-md-6">
             <div class="card">
                 <div class="card-header">
-                    Login form
+                    Call Service B
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <button type="button" class="btn btn-primary" id="service-b">Submit</button>
                 </div>
             </div>
         </div>
@@ -57,12 +72,7 @@
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
@@ -72,56 +82,58 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
 <script>
     let firebaseConfig = {
+
     };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-    $(document).ready(function () {
-        $("#logout").attr("disabled", true).hide();
-
-        $("#signup-button").click(function () {
-            let email = $("#signup-email").val();
-            let pass = $("#signup-password").val();
-
-            if (email === "" || pass === "") {
-                return false;
-            }
-
-            firebase.auth().createUserWithEmailAndPassword(email, pass).catch(function (error) {
-                alert(error.message);
-                return false;
-            })
-
-        });
-
-
+    $(document).ready(() => {
+        let token = "";
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                console.log(user);
-                disableSignUpForm();
-
+                $("#email").text(user.email);
+                $("#emailVerified").text(user.emailVerified);
+                $("#userId").text(user.uid);
+                user.getIdToken().then(t => {
+                    token = t;
+                    $("#token").text(token);
+                }).catch(e => alert(e.message));
             } else {
-                enableSignUpForm();
+                gotoHome();
             }
         });
 
         $("#logout").click(function () {
             firebase.auth().signOut();
+            gotoHome();
+        });
+
+        $("#service-a").click(() => {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "http://localhost:1313/api/serviceA",
+                dataType: "json",
+                headers: {"id-token": token},
+                complete: (d) => alert(d.responseText)
+            });
+        });
+
+
+        $("#service-b").click(() => {
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "http://localhost:1313/api/serviceB",
+                dataType: "json",
+                headers: {"id-token": token},
+                complete: (d) => alert(d.responseText)
+            });
         });
     });
 
-    function disableSignUpForm() {
-        $("#signup-email").attr("readOnly", true);
-        $("#signup-password").attr("readOnly", true);
-        $("#signup-button").attr("disabled", true);
-        $("#logout").attr("disabled", false).show();
-    }
-
-    function enableSignUpForm() {
-        $("#signup-email").attr("readOnly", false);
-        $("#signup-password").attr("readOnly", false);
-        $("#signup-button").attr("disabled", false);
-        $("#logout").attr("disabled", true).hide();
+    function gotoHome() {
+        window.location.replace("http://localhost:1313/index.html");
     }
 
 </script>

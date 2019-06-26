@@ -2,49 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Firebase Authentication demo</title>
+    <title>Firebase Authentication</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-
-<div class="container">
-    <div class="jumbotron mt-5">
-        <h1 class="display-4">Hello, there!</h1>
-        <p class="lead">Create a user below</p>
+<div class="container pt-3">
+    <div class="jumbotron">
+        <h1 class="display-4">Hail Firebase !!</h1>
+        <p class="lead">Welcome to our awesome app. Let's get started.</p>
         <hr>
+        <p>Login below if you already have an account or
+            <a href="http://localhost:1313/signup.html">signup</a>
+        </p>
     </div>
     <div class="row">
-        <div class="col-sm-8 offset-sm-2">
-            <div class="card">
-                <div class="card-header">
-                    Signup Form
+        <div class="col-sm-12">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Email">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password">
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form id="signup-form">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control disabled" id="signup-email"
-                                   aria-describedby="emailHelp"
-                                   placeholder="Enter email" required>
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                else.
-                            </small>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="signup-password" placeholder="Password"
-                                   required>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="signup-button">Submit</button>
-                    </form>
-                </div>
-            </div>
+                <button type="button" id="login" class="btn btn-primary">Sign in</button>
+            </form>
         </div>
     </div>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -58,42 +47,47 @@
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
+
 <script>
-    let firebaseConfig = {};
-    // Initialize Firebase
+    let firebaseConfig = {
+
+    };
     firebase.initializeApp(firebaseConfig);
 
-    $(document).ready(function () {
+    $(document).ready(() => {
+        clearForm();
+
+        // if the user is logged in, redirect to dashboard
         firebase.auth().onAuthStateChanged(u => {
             if (u) gotoDashboard();
         });
 
-        $("#signup-button").click(() => {
-            let email = $("#signup-email").val();
-            let pass = $("#signup-password").val();
+        // login to application
+        $("#login").click(function () {
+            let email = $("input#email").val();
+            let password = $("input#password").val();
 
-            if (email === "" || pass === "") {
-                alert("please provide username and password");
-                return false;
+            if (password !== "" && email !== "") {
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then(() => gotoDashboard())
+                    .catch(e => {
+                        alert(e.message);
+                        clearForm();
+                        return false;
+                    });
             }
-
-            firebase.auth()
-                .createUserWithEmailAndPassword(email, pass)
-                .then(() => gotoDashboard())
-                .catch((error) => {
-                    alert(error.message);
-                    return false;
-                });
-
         });
-
-
     });
 
+    function clearForm() {
+        $("input#email").val("");
+        $("input#password").val("");
+    }
 
     function gotoDashboard() {
         window.location.replace("http://localhost:1313/dashboard.html");
     }
+
 </script>
 </body>
-</html>;
+</html>

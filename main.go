@@ -19,13 +19,27 @@ func main() {
 }
 
 func serviceA(ctx echo.Context) error {
+	idToken := ctx.Request().Header.Get("id-token")
+	if idToken == "" {
+		return ctx.JSON(200, map[string]string{
+			"error": "no token",
+		})
+	}
 	resp := make(map[string]string)
 	resp["name"] = "Service A"
+	resp["time"] = time.Now().Format(time.UnixDate)
 	return ctx.JSON(200, resp)
 }
 func serviceB(ctx echo.Context) error {
+	idToken := ctx.Request().Header.Get("id-token")
+	if idToken == "" {
+		return ctx.JSON(200, map[string]string{
+			"error": "no token",
+		})
+	}
 	resp := make(map[string]string)
 	resp["name"] = "Service B"
+	resp["time"] = time.Now().Format(time.UnixDate)
 	return ctx.JSON(200, resp)
 }
 
