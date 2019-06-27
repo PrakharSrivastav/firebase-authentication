@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Signup</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -12,24 +12,24 @@
         <h1 class="display-4">Hail Firebase !!</h1>
         <p class="lead">Welcome to our awesome app. Let's get started.</p>
         <hr>
-        <p>Login below or sign-up
-            <a href="http://localhost:1313/signup.html">here</a>
+        <p>Sign-up below or login
+            <a href="http://localhost:1313/index.html">here</a>
         </p>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-8 offset-sm-2">
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-sm-12">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" id="email" placeholder="Email">
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-sm-12">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" placeholder="Password">
                     </div>
                 </div>
-                <button type="button" id="login" class="btn btn-primary">Sign in</button>
+                <button type="button" id="signup" class="btn btn-primary">Sign up</button>
             </form>
         </div>
     </div>
@@ -70,17 +70,21 @@
         });
 
         // login to application
-        $("#login").click(function () {
+        $("#signup").click(function () {
             let email = $("input#email").val();
             let password = $("input#password").val();
 
             if (password !== "" && email !== "") {
                 firebase
                     .auth()
-                    .signInWithEmailAndPassword(email, password)
+                    .createUserWithEmailAndPassword(email, password)
                     .then(() => gotoDashboard())
                     .catch(e => {
-                        alert(e.message);
+                        if (e.code == 'auth/weak-password') {
+                            alert('The password is too weak.');
+                        } else {
+                            alert(e.message);
+                        }
                         clearForm();
                         return false;
                     });

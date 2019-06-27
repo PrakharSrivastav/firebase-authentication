@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Firebase Authentication demo</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -82,8 +82,15 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
 <script>
     let firebaseConfig = {
-
+        apiKey: "your-api-key",
+        authDomain: "your-project-id.firebaseapp.com",
+        databaseURL: "https://your-project-id.firebaseio.com",
+        projectId: "your-project-id",
+        storageBucket: "",
+        messagingSenderId: "your-messaging-sender-id",
+        appId: "your-app-id"
     };
+
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
@@ -109,31 +116,28 @@
         });
 
         $("#service-a").click(() => {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "http://localhost:1313/api/serviceA",
-                dataType: "json",
-                headers: {"id-token": token},
-                complete: (d) => alert(d.responseText)
-            });
+            callService("serviceA", token)
         });
 
 
         $("#service-b").click(() => {
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "http://localhost:1313/api/serviceB",
-                dataType: "json",
-                headers: {"id-token": token},
-                complete: (d) => alert(d.responseText)
-            });
+            callService("serviceB", token)
         });
     });
 
     function gotoHome() {
         window.location.replace("http://localhost:1313/index.html");
+    }
+
+    function callService(serviceName, token) {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "http://localhost:1313/api/" + serviceName,
+            dataType: "json",
+            headers: {"id-token": token},
+            complete: (d) => alert(d.responseText)
+        });
     }
 
 </script>
