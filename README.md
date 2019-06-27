@@ -26,3 +26,13 @@ Before you start, do the following
 - go to index page [http://localhost:1313](http://localhost:1313)
 - enter your login details if you have created account already
 - else go to [signup](http://localhost:1313/signup.html) page and create an account
+
+# screenshots
+Login
+![login](./Login.png)
+
+Signup
+![Signup](./Signup.png)
+
+Dashboard
+![Dashboard](./Dashboard.png)
