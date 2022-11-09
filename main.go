@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"time"
 
 	firebase "firebase.google.com/go"
@@ -30,6 +32,7 @@ func main() {
 		e.Logger.Fatalf("error creating firebase client: %v", err)
 	}
 
+	e.Use(VerifyHeader)
 	e.Static("/", "public")
 
 	grp := e.Group("/api/")
@@ -94,9 +97,21 @@ func serviceB(ctx echo.Context) error {
 }
 
 func server() *http.Server {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	return &http.Server{
-		Addr:         ":1313",          // port
+		Addr:         ":" + port,       // port
 		ReadTimeout:  20 * time.Minute, // read timeout
 		WriteTimeout: 20 * time.Minute, // write timeout
+	}
+}
+
+func VerifyHeader(next echo.HandlerFunc) echo.HandlerFunc {
+
+	return func(ctx echo.Context) error {
+		log.Println(ctx.Request().RequestURI)
+		return next(ctx)
 	}
 }

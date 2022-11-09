@@ -13,7 +13,8 @@
         <p class="lead">Welcome to our awesome app. Let's get started.</p>
         <hr>
         <p>Login below or sign-up
-            <a href="http://localhost:1313/signup.html">here</a>
+<!--            <a href="http://localhost:1313/signup.html">here</a>-->
+            <a href="https://firebase-ex-l6mmmvyhbq-lz.a.run.app/signup.html">here</a>
         </p>
     </div>
     <div class="row">
@@ -50,13 +51,13 @@
 
 <script>
     let firebaseConfig = {
-        apiKey: "your-api-key",
-        authDomain: "your-project-id.firebaseapp.com",
-        databaseURL: "https://your-project-id.firebaseio.com",
-        projectId: "your-project-id",
-        storageBucket: "",
-        messagingSenderId: "your-messaging-sender-id",
-        appId: "your-app-id"
+        apiKey: "AIzaSyBd4tSEh8B1c6CYGjtC0d9oRxlT3jmoxgc",
+        authDomain: "cip-kubernetes-dev.firebaseapp.com",
+        databaseURL: "https://cip-kubernetes-dev.firebaseio.com",
+        projectId: "cip-kubernetes-dev",
+        storageBucket: "cip-kubernetes-dev.appspot.com",
+        messagingSenderId: "63785118804",
+        appId: "1:63785118804:web:2f25b071ce8b089dc151c1"
     };
 
     firebase.initializeApp(firebaseConfig);
@@ -94,7 +95,8 @@
     }
 
     function gotoDashboard() {
-        window.location.replace("http://localhost:1313/dashboard.html");
+        window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/dashboard.html");
+        // window.location.replace("http://localhost:1313/dashboard.html");
     }
 
 </script>

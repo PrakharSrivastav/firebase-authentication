@@ -40,7 +40,12 @@
                     <tr>
                         <th scope="row">3</th>
                         <td>Token</td>
-                        <td id="token">the Bird</td>
+                        <td id="token" class="text-break">the Bird</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Claims</td>
+                        <td id="claims"  class="text-break"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -82,13 +87,13 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
 <script>
     let firebaseConfig = {
-        apiKey: "your-api-key",
-        authDomain: "your-project-id.firebaseapp.com",
-        databaseURL: "https://your-project-id.firebaseio.com",
-        projectId: "your-project-id",
-        storageBucket: "",
-        messagingSenderId: "your-messaging-sender-id",
-        appId: "your-app-id"
+        apiKey: "AIzaSyBd4tSEh8B1c6CYGjtC0d9oRxlT3jmoxgc",
+        authDomain: "cip-kubernetes-dev.firebaseapp.com",
+        databaseURL: "https://cip-kubernetes-dev.firebaseio.com",
+        projectId: "cip-kubernetes-dev",
+        storageBucket: "cip-kubernetes-dev.appspot.com",
+        messagingSenderId: "63785118804",
+        appId: "1:63785118804:web:2f25b071ce8b089dc151c1"
     };
 
     // Initialize Firebase
@@ -101,10 +106,15 @@
                 $("#email").text(user.email);
                 $("#emailVerified").text(user.emailVerified);
                 $("#userId").text(user.uid);
-                user.getIdToken().then(t => {
+                
+                user.getIdToken(true).then(t => {
                     token = t;
                     $("#token").text(token);
                 }).catch(e => alert(e.message));
+                
+                user.getIdTokenResult(false).then(t => {
+                    $("#claims").text(JSON.stringify(t.claims));
+                })
             } else {
                 gotoHome();
             }
@@ -126,14 +136,15 @@
     });
 
     function gotoHome() {
-        window.location.replace("http://localhost:1313/index.html");
+        // window.location.replace("http://localhost:8080/index.html");
+        window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/index.html");
     }
 
     function callService(serviceName, token) {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "http://localhost:1313/api/" + serviceName,
+            url: "https://firebase-ex-l6mmmvyhbq-lz.a.run.app/api/" + serviceName,
             dataType: "json",
             headers: {"id-token": token},
             complete: (d) => alert(d.responseText)
