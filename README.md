@@ -23,9 +23,9 @@ Before you start, do the following
 - download the service-account.json file from firebase. keep it safely under the root of the project as "fb.json"
 - build the app `go build ./...`
 - run the app `ro run main.go`
-- go to index page [http://localhost:1313](http://localhost:1313)
+- go to index page [http://localhost:8080](http://localhost:8080)
 - enter your login details if you have created account already
-- else go to [signup](http://localhost:1313/signup.html) page and create an account
+- else go to [signup](http://localhost:8080/signup.html) page and create an account
 
 # screenshots
 Login

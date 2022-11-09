@@ -136,15 +136,16 @@
     });
 
     function gotoHome() {
-        // window.location.replace("http://localhost:8080/index.html");
-        window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/index.html");
+        window.location.replace("http://localhost:8080/index.html");
+        // window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/index.html");
     }
 
     function callService(serviceName, token) {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "https://firebase-ex-l6mmmvyhbq-lz.a.run.app/api/" + serviceName,
+            url: "http://localhost:8080/api/" + serviceName,
+            // url: "https://firebase-ex-l6mmmvyhbq-lz.a.run.app/api/" + serviceName,
             dataType: "json",
             headers: {"id-token": token},
             complete: (d) => alert(d.responseText)
