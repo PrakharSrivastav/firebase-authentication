@@ -98,7 +98,10 @@
     }
 
     function gotoDashboard() {
-        window.location.replace("http://localhost:8080/dashboard.html");
+        const baseURL = document.URL.substring(0, document.URL.lastIndexOf('/'));
+        const dashboard = baseURL + '/dashboard.html';
+        // alert(dashboard)
+        window.location.replace(dashboard);
         // window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/dashboard.html");
     }
 

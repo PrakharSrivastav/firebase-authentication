@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 <div class="container pt-3">
-    <div class="jumbotron">
-        <h1 class="display-4">Hail Firebase !!</h1>
-        <p class="lead">Welcome to our awesome app. Let's get started.</p>
-        <hr>
-        <p>Login below or sign-up
-<!--            <a href="http://localhost:1313/signup.html">here</a>-->
-            <a href="https://firebase-ex-l6mmmvyhbq-lz.a.run.app/signup.html">here</a>
-        </p>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" id="email" placeholder="Email">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password">
-                    </div>
-                </div>
-                <button type="button" id="login" class="btn btn-primary">Sign in</button>
-            </form>
-        </div>
-    </div>
+	<div class="jumbotron">
+		<h1 class="display-4">Hail Firebase !!</h1>
+		<p class="lead">Welcome to our awesome app. Let's get started.</p>
+		<hr>
+		<p>Login below or sign-up
+			<!--            <a href="http://localhost:1313/signup.html">here</a>-->
+			<a href="https://firebase-ex-l6mmmvyhbq-lz.a.run.app/signup.html">here</a>
+		</p>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<form>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="email">Email</label>
+						<input type="email" class="form-control" id="email" placeholder="Email">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="password">Password</label>
+						<input type="password" class="form-control" id="password" placeholder="Password">
+					</div>
+				</div>
+				<button type="button" id="login" class="btn btn-primary">Sign in</button>
+			</form>
+		</div>
+	</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -50,54 +50,56 @@
 <script src="https://www.gstatic.com/firebasejs/6.2.3/firebase-auth.js"></script>
 
 <script>
-    let firebaseConfig = {
-        apiKey: "AIzaSyBd4tSEh8B1c6CYGjtC0d9oRxlT3jmoxgc",
-        authDomain: "cip-kubernetes-dev.firebaseapp.com",
-        databaseURL: "https://cip-kubernetes-dev.firebaseio.com",
-        projectId: "cip-kubernetes-dev",
-        storageBucket: "cip-kubernetes-dev.appspot.com",
-        messagingSenderId: "63785118804",
-        appId: "1:63785118804:web:2f25b071ce8b089dc151c1"
-    };
+  let firebaseConfig = {
+    apiKey: 'AIzaSyBd4tSEh8B1c6CYGjtC0d9oRxlT3jmoxgc',
+    authDomain: 'cip-kubernetes-dev.firebaseapp.com',
+    databaseURL: 'https://cip-kubernetes-dev.firebaseio.com',
+    projectId: 'cip-kubernetes-dev',
+    storageBucket: 'cip-kubernetes-dev.appspot.com',
+    messagingSenderId: '63785118804',
+    appId: '1:63785118804:web:2f25b071ce8b089dc151c1',
+  };
 
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 
-    $(document).ready(() => {
-        clearForm();
+  $(document).ready(() => {
 
-        // if the user is logged in, redirect to dashboard
-        firebase.auth().onAuthStateChanged(u => {
-            if (u) gotoDashboard();
-        });
+    console.log(document.URL.substring(0, document.URL.lastIndexOf('/')));
+    clearForm();
 
-        // login to application
-        $("#login").click(function () {
-            let email = $("input#email").val();
-            let password = $("input#password").val();
-
-            if (password !== "" && email !== "") {
-                firebase
-                    .auth()
-                    .signInWithEmailAndPassword(email, password)
-                    .then(() => gotoDashboard())
-                    .catch(e => {
-                        alert(e.message);
-                        clearForm();
-                        return false;
-                    });
-            }
-        });
+    // if the user is logged in, redirect to dashboard
+    firebase.auth().onAuthStateChanged(u => {
+      if (u) gotoDashboard();
     });
 
-    function clearForm() {
-        $("input#email").val("");
-        $("input#password").val("");
-    }
+    // login to application
+    $('#login').click(function() {
+      let email = $('input#email').val();
+      let password = $('input#password').val();
 
-    function gotoDashboard() {
-        // window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/dashboard.html");
-        window.location.replace("http://localhost:8080/dashboard.html");
-    }
+      if (password !== '' && email !== '') {
+        firebase.auth().signInWithEmailAndPassword(email, password).then(() => gotoDashboard()).catch(e => {
+          alert(e.message);
+          clearForm();
+          return false;
+        });
+      }
+    });
+  });
+
+  function clearForm() {
+    $('input#email').val('');
+    $('input#password').val('');
+  }
+
+  function gotoDashboard() {
+    const baseURL = document.URL.substring(0, document.URL.lastIndexOf('/'));
+    const dashboard = baseURL + '/dashboard.html';
+
+    // alert(dashboard)
+    // window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/dashboard.html");
+    window.location.replace(dashboard);
+  }
 
 </script>
 </body>

@@ -22,7 +22,7 @@ func main() {
 		log.Fatalf("error creating firebase client: %v", err)
 	}
 
-	user, err := client.GetUserByEmail(ctx, "local@test.no")
+	user, err := client.GetUserByEmail(ctx, "weather@test.no")
 	if err != nil {
 		log.Fatalf("client.GetUserByEmail: %v", err)
 	}
@@ -31,7 +31,7 @@ func main() {
 	claims := map[string]interface{}{
 		"principal": "id-a",
 		"scope":     "id-b",
-		"companyId": "some internal id",
+		"companyID": "AOF",
 	}
 
 	err = client.SetCustomUserClaims(ctx, uid, claims)

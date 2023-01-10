@@ -34,6 +34,7 @@ func main() {
 
 	e.Use(VerifyHeader)
 	e.Static("/", "public")
+	e.Static("/firebase", "public")
 
 	grp := e.Group("/api/")
 	grp.GET("serviceA", serviceA)

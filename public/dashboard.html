@@ -136,7 +136,10 @@
     });
 
     function gotoHome() {
-        window.location.replace("http://localhost:8080/index.html");
+        const baseURL = document.URL.substring(0, document.URL.lastIndexOf('/'));
+        const index = baseURL + '/index.html';
+        // alert(index)
+        window.location.replace(index);
         // window.location.replace("https://firebase-ex-l6mmmvyhbq-lz.a.run.app/index.html");
     }
 
